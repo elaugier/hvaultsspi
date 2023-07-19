@@ -1,0 +1,23 @@
+volumes:
+  hvault_volume_logs:
+    driver: local
+  hvault_volume_file:
+    driver: local
+  hvault_volume_config:
+    driver: local
+services:
+  vault-server:
+    image: hashicorp/vault:latest
+    ports:
+      - "8201:8200"
+    environment:
+      VAULT_LOCAL_CONFIG: >-
+        {"storage": {"file": {"path": "/vault/file"}}, "listener": [{"tcp": { "address": "0.0.0.0:8200", "tls_disable": true}}], "default_lease_ttl": "168h", "max_lease_ttl": "720h", "ui": true}'
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - hvault_volume_logs:/vault/logs
+      - hvault_volume_file:/vault/file
+      - hvault_volume_config:/vault/config
+    command:
+      - "server"

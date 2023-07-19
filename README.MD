@@ -1,0 +1,1 @@
+[https://developer.hashicorp.com/vault/tutorials/auth-methods/approle-best-practices](test)
